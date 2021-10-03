@@ -254,7 +254,7 @@ Screenshots:
   {
     "title": "string",
     "description": "string",
-    "user": 0 //user's primary key
+    "user": 0
   }
   ```
   - header: `Authorization Bearer`
@@ -310,9 +310,9 @@ Screenshots:
 
 <hr>
 
-`api/tasks/<int:pk>/update`
+`api/tasks/<int:pk>`
 
-> You can update Task by its pk
+> You can update(or partial update) Task by its pk
 
 - **Request**:
   - method - `PUT|PATCH`
@@ -339,7 +339,7 @@ Screenshots:
   ```
   <hr>
 
-`api/tasks/<int:pk>/delete`
+`api/tasks/<int:pk>`
 
 > You can delete Task by its pk
 
