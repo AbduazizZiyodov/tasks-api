@@ -11,17 +11,7 @@ urlpatterns: list = [
     ),
 
     path(
-        'api/tasks/<int:pk>', task_detail,
-        name='You can get Task by its pk'
-    ),
-
-    path(
-        'api/tasks/<int:pk>/update', update_task,
-        name="You can update Task by its pk"
-    ),
-
-    path(
-        'api/tasks/<int:pk>/delete', delete_task,
-        name="You can delete Task by its pk"
+        'api/tasks/<int:pk>', task_detailed,
+        name='You can perform actions at Task by its pk'
     ),
 ]

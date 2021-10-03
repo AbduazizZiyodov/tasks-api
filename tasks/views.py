@@ -1,8 +1,8 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
-from rest_framework.generics import UpdateAPIView
-from rest_framework.generics import DestroyAPIView
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
+
+from rest_framework.permissions import AllowAny
 
 from .models import Task
 
@@ -18,36 +18,30 @@ class ListTasks(ListAPIView):
     serializer_class = TaskListSerializer
 
 
-class TaskDetail(RetrieveAPIView):
-    permission_classes = [CanRead]
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-
 class CreateTask(CreateAPIView):
-    permission_classes = [CanCreate]
+    permission_classes = [CanCreate, ]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
 
-class UpdateTask(UpdateAPIView):
-    permission_classes = [CanUpdate]
+class TaskDetailed(RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+    def get_permissions(self):
+        permissions: dict[str, tuple] = {
+            "GET": (CanRead(),),
+            "PUT": (CanUpdate(),),
+            "PATCH": (CanUpdate(),),
+            "DELETE": (CanDelete(),)
+        }
+        return permissions.get(self.request.method, (AllowAny(),))
 
-class DeleteTask(DestroyAPIView):
-    permission_classes = [CanDelete]
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
 
-
-tasks, create_task, update_task, delete_task, task_detail = \
-    ListTasks.as_view(), CreateTask.as_view(), UpdateTask.as_view(),\
-    DeleteTask.as_view(), TaskDetail.as_view()
+tasks, create_task, task_detailed = \
+    ListTasks.as_view(), CreateTask.as_view(), TaskDetailed.as_view()
 
 
 __all__: list = [
-    "tasks", "create_task", "update_task",
-    "delete_task", "task_detail"
+    "tasks", "create_task", "task_detailed",
 ]
